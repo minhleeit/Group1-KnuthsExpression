@@ -25,7 +25,9 @@ def perform_action(current_value, action):
                 approximation = new_approx
     
     elif action == "fact":
-        return Decimal(math.factorial(current_value))
+#        print("TYPE AT FACTORIAL: ", type(current_value))
+#        print("CURRENT VALUE FOR CURRENT_VALUE", current_value)
+        return Decimal(math.factorial(int(current_value)))
     
     elif action == "floor": 
         return math.floor(Decimal(current_value))
@@ -41,7 +43,7 @@ def evaulate_expression(evalute_expression):
     actions = evalute_expression.split()
     for index in range(0,len(actions)):
         current_value = perform_action(current_value,actions[index])
-    print("RESULT IS " + str(current_value))
+ #   print("RESULT IS " + str(current_value))
     return current_value
 
 
@@ -49,6 +51,7 @@ def check_if_goal_reached(state, target):
     result = evaulate_expression(state)
     if (target == result):
         print("TARGET FOUND")
+        print(state)
         return True
     #Any value that goes towards 1 when the target is greater than 3 we dont care about
     elif target != 1 and result < 2:
@@ -57,15 +60,16 @@ def check_if_goal_reached(state, target):
         state_list.append(str(state) + " floor")
     else:
         if str(result) in seen_states :
-            print("STATE SEEN", result)
+  #          print("STATE SEEN", result)
+            pass
 
         else:
-            print("ADDING RESULT", result)
+  #          print("ADDING RESULT", result)
             seen_states[str(result)] = state
             add_successors(state, result)    
-            print()
-            print("CURRENT LIST: ", state_list)
-            print()
+ #           print()
+ #           print("CURRENT LIST: ", state_list)
+#            print()
             return False
 
 def add_successors(state, result):
@@ -85,45 +89,21 @@ def advance(target):
  
     while len(state_list) >0:
         next_item = state_list.pop()
-        print("NEXT ITEM: ", next_item)
         if check_if_goal_reached(next_item,target):
             break
+
+continue_prompt = True
+while continue_prompt:        
+    print()
+    user_input = input("please enter a targer number as an integer or type end to exit >> ")
+    if user_input == "end":
+        print("Thank you for using the knuth expression program")
+        exit()
+    else:
+        try:
+            target = int(user_input)
+            print("Calculating.... please wait ...")
+            advance(target)
         
-
-target = 9
-advance(target)
-# evaulate_expression("3 fact sqrt floor")
-
-# evaulate_expression("3 floor")
-
-# evaulate_expression("3 fact fact")
-
-# evaulate_expression("3 fact fact sqrt")
-
-# evaulate_expression("3 fact fact sqrt sqrt")
-        
-# evaulate_expression("3 fact fact sqrt sqrt floor")
-
-# evaulate_expression("3 fact fact sqrt sqrt floor fact")
-
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt")
-
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact")
-
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt")
-
-
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt")
-
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact")
-
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt")
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt sqrt")
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt sqrt sqrt")
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt sqrt sqrt sqrt")
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt sqrt sqrt sqrt sqrt")
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt sqrt sqrt sqrt sqrt sqrt")
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt sqrt sqrt sqrt sqrt sqrt floor fact")
-
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt sqrt sqrt sqrt sqrt sqrt floor fact sqrt")
-# evaulate_expression("3 fact fact sqrt sqrt floor fact sqrt floor fact sqrt sqrt floor fact sqrt sqrt sqrt sqrt sqrt sqrt floor fact sqrt floor sqrt")
+        except:
+            print("Invalid input")
